@@ -1,3 +1,5 @@
+import os
+
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.urls import reverse  # to generate API's url
@@ -28,9 +30,9 @@ class PublicUserApiTests(TestCase):
         """Test creating user with valid payload is successful"""
         # payload is the objects that you pass to the API when you make the request
         payload = {
-            'email': 'sangv@test.co',
-            'password': 'pwd123',
-            'username': 'sangv',
+            'email': os.environ.get('USER_EMAIL'),
+            'password': os.environ.get('USER_PASSWORD'),
+            'username': os.environ.get('USER_NAME'),
 
         }
         res = self.client.post(CREATE_USER_URL, payload)
@@ -46,9 +48,9 @@ class PublicUserApiTests(TestCase):
     def test_user_exists(self):
         """Test creatings user that already exists fails"""
         payload = {
-            'email': 'sangv@test.co',
-            'password': 'pwd123',
-            'username': 'sangv',
+            'email': os.environ.get('USER_EMAIL'),
+            'password': os.environ.get('USER_PASSWORD'),
+            'username': os.environ.get('USER_NAME'),
         }
         create_user(**payload)
 
@@ -59,9 +61,10 @@ class PublicUserApiTests(TestCase):
     def test_password_too_short(self):
         """Test that the password must be more than 5 Characters"""
         payload = {
-            'email': 'sangv@test.co',
-            'password': 'pw',
-            'username': 'sangv',
+            'email': os.environ.get('USER_EMAIL'),
+            'password': 'PW',
+            'username': os.environ.get('USER_NAME'),
+
         }
         res = self.client.post(CREATE_USER_URL, payload)
 
@@ -73,8 +76,9 @@ class PublicUserApiTests(TestCase):
 
     def test_create_token_for_user(self):
         """Test taht a token is created for the user"""
-        payload = {'email': 'sangv@test.co',
-                   'password': 'pwd123'
+        payload = {
+            'email': os.environ.get('USER_EMAIL'),
+            'password': os.environ.get('USER_PASSWORD'),
         }
         create_user(**payload)
         res = self.client.post(TOKEN_URL, payload)
@@ -84,8 +88,8 @@ class PublicUserApiTests(TestCase):
 
     def test_create_token_invalid_credentials(self):
         """Test that token is not created if invalid credentials are given"""
-        create_user(email='sangv@test.co', password='pwd123')
-        payload = {'email': 'sangv@test.co',
+        create_user(email=os.environ.get('USER_EMAIL'), password=os.environ.get('USER_PASSWORD'))
+        payload = {'email': os.environ.get('USER_EMAIL'),
                    'password': 'wrong'}
         res = self.client.post(TOKEN_URL, payload)
 
@@ -94,8 +98,8 @@ class PublicUserApiTests(TestCase):
 
     def test_create_token_no_user(self):
         """Test that token is not cerated if user doesn't exist"""
-        payload = {'email': 'sangv@test.co',
-                   'password': 'pwd123'
+        payload = {'email': os.environ.get('USER_EMAIL'),
+                   'password': os.environ.get('USER_PASSWORD')
                    }
         res = self.client.post(TOKEN_URL, payload)
 

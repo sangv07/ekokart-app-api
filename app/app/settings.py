@@ -20,7 +20,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-xuf^3)y+8$n^qx)mwc+h*@ka-efh&m!wcoxsjw_^2p6pz353ll'
+# getting 'SECRET_KEY' from .env to docker-compose.yml to seeting.py
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
