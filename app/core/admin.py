@@ -3,11 +3,11 @@ from django.contrib.auth.admin import UserAdmin
 # python to human readable text
 from django.utils.translation import gettext as _
 
-from core.models import UserAccount
+from core.models import UserAccount, Tag
 
 
 class UserAccountAdmin(UserAdmin):
-    list_display = ('email', 'username', 'first_name', 'last_name', 'is_superuser')
+    list_display = ('email', 'username', 'first_name', 'last_name', 'is_superuser','last_login')
     ordering = ['id']
     readonly_fields = ('date_joined', 'last_login')
 
@@ -40,3 +40,4 @@ class UserAccountAdmin(UserAdmin):
 
 # Register your models here
 admin.site.register(UserAccount, UserAccountAdmin)
+admin.site.register(Tag)

@@ -7,7 +7,7 @@ class AdminSiteTests(TestCase):
 
     # SetUp function will run before every Test in Test CAses
     def setUp(self):
-        print('***Test setUO()********')
+        print('***SetUP https://docs.djangoproject.com/en/3.2/topics/testing/tools/********')
         self.client = Client()
         # passing email and password to app/core/model/UserManger() is functions() and forced tp login
         self.admin_user = get_user_model().objects.create_superuser(

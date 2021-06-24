@@ -21,7 +21,11 @@ services:
       - SECRET_KEY=${SECRET_KEY}
       - USER_EMAIL=${EMAIL}
       - USER_NAME=${USERNAME}
-      - USER_PASSWORD=${PASSWORD}
+      - USER_FNAME=${F_NAME}
+      - USER_LNAME=${L_NAME}
+      - USER_PASS=${PASSWORD}
+      - NEW_USER_NAME=${UPDATED_NAME}
+      - NEW_USER_PASS=${UPDATED_PASS}
     depends_on:
       - db
 

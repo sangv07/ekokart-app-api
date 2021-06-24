@@ -14,6 +14,7 @@ class UserSerializer(serializers.ModelSerializer):
     """Serializer for the users objects"""
 
     class Meta:
+        # This method will return the currently active User model – the custom User model if one is specified, or User otherwise (in this case app/core/models/UserAccount())
         model = get_user_model()
         fields = ('email', 'password', 'username')
         extra_kwargs = {
@@ -22,13 +23,24 @@ class UserSerializer(serializers.ModelSerializer):
         }
 
     # what Django rest framework does is when we're ready to create the user it
-    # will call this create function and it will pass in the validated data.
-    # The validated data will contain all of the data that was passed into our serializer
+    # will call this create function and it will pass in the validated_data.
+    # The validated_data will contain all of the data that was passed into our serializer
     # which would be the JSON data that was made in the HTTP POST
     # and it passes it as the argument here and then we can then use that to create our user.
     def create(self, validated_data):
         """Create a new user with encrypted password and return it"""
         return get_user_model().objects.create_user(**validated_data)
+
+    def update(self, instance, validated_data):
+        """Update a user, setting the password correctly and return it"""
+        password = validated_data.pop('password', None)
+        user = super().update(instance, validated_data)
+
+        if password:
+            user.set_password(password)
+            user.save()
+
+        return user
 
 
 # creating Token API to make our unit tests pass again

@@ -1,11 +1,10 @@
 ## command
-docker build .
-docker-compose build
 
-<--! docker-compose run -rm =>> will remove the docker container after ran the command.(onetime-command) so that docker container will not fill-up
+
+<--! docker-compose run --rm =>> will remove the docker container after ran the command.(onetime-command) so that docker container will not fill-up
 docker-compose run -rm app sh -c "python manage.py <your required keyword>"  
 docker-compose run app sh -c "django-admin startproject app ."
-docker-compose run app sh -c "python manage.py <test_filename.py>"
+docker-compose run app sh -c "python manage.py test"
 
 # ekokart-app-api
 Ekokart app api source code

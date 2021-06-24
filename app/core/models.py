@@ -1,14 +1,16 @@
+import uuid
+
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+
+from django.conf import settings
 
 
 # Create your models here.
 class UserManager(BaseUserManager):
-    print(1)
 
     # Creating new user and save in DB
     def create_user(self, email, password=None, **extra_fields):
-        print(2)
         """ **extra_fields is used for dynamic other_fields
            Custom_User_Model_Manger where email is the unique identifiers for authentication instead of username.
         """
@@ -26,7 +28,6 @@ class UserManager(BaseUserManager):
         return user
 
     def create_superuser(self, first_name, last_name, username, email, password=None):
-        print(3)
         """Custom_create_super_user_Model"""
         user = self.create_user(
             email       = self.normalize_email(email),
@@ -49,7 +50,6 @@ class UserManager(BaseUserManager):
 # It also provides a set of utility methods to check if the model with this mixin has a given permission (for example with has_perm)
 class UserAccount(AbstractBaseUser, PermissionsMixin):
     """Custom user model that supports using email instead of username"""
-    print(4)
 
     first_name  = models.CharField(max_length=100, verbose_name='first_name')
     last_name   = models.CharField(max_length=255, verbose_name='last_name')
@@ -70,9 +70,22 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
         db_table = 'User_Account'
 
     objects = UserManager()
-    print(5)
 
     # This just means that when we return the account object inside the template. So this should return the email address.
     def __str__(self):
-        print(6)
         return self.email
+
+
+# creating class tags() because AttributeError: module 'core.models' has no attribute 'Tag'
+class Tag(models.Model):
+    """Tag to be used for a recipe"""
+    # Id = models.UUIDField(default=uuid.uuid4, primary_key=True)
+    username = models.CharField(max_length=255)
+    useraccount = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+
+    )
+    # String Representation
+    def __str__(self):
+        return self.username
