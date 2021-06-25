@@ -61,7 +61,7 @@ class ModelTests(TestCase):
         """Test the tag string representation"""
         tag = models.Tag.objects.create(
             useraccount=sample_user(),
-            username='Vegan'
+            username='Non-Veg'
         )
 
         self.assertEqual(str(tag), tag.username)
@@ -72,7 +72,20 @@ class ModelTests(TestCase):
         """Test the ingredient string representation"""
         ingredient = models.Ingredient.objects.create(
             useraccount=sample_user(),
-            username='Cucumber'
+            username='Chicken'
         )
 
         self.assertEqual(str(ingredient), ingredient.username)
+
+    # to pass below test we have to create Recipe Class in core/models
+    def test_recipe_str(self):
+        """Test the recipe String Representation"""
+        recipe = models.Recipe.objects.create(
+            useraccount=sample_user(),
+            title='Mo:Mo',
+            time_minutes=5,
+            price=5.00
+        )
+
+        self.assertEqual(str(recipe), recipe.title)
+

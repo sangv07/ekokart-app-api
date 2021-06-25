@@ -34,6 +34,39 @@ Ekokart app api source code
                 an attacker would have in our documentation.
 
 ## Creating UnitTest (test_model.py, test_admin.py
+     """
+     When writing software it's important to include unit tests with your code unit tests are simply tests 
+        which check that your code does what it's supposed to do. You start by isolating the particular piece of code to be tested. This could be a function or a class.
+        In our case most of the test we write will be making actual API calls to our endpoints. Knowing which code to target comes with practice.
+        So this should become clearer by the end of the course. Tests are typically broken down into three stages. The first stage is the setup.
+        This is where you would normally create some sample objects in your database that you can use to test your code.
+        For example if we were testing an API endpoint that updates a recipe we would start by creating a sample
+        recipe that we can use to test our endpoint. The second stage is the execution. This is where you actually call the code being tested.
+        So in our example we would call our recipe update endpoint with our test client with the ID of the sample recipe and some sample fields to update.
+        Then the final stage is the assertion stage where you check for the code performed what it was supposed to do.
+        So in our recipe example we would ensure that the appropriate fields on our sample recipe were updated to the correct values
+        If it doesn't fully make sense just yet don't worry it should become clearer as we work through the
+        hands on examples in this course. So you might be thinking why go through all this effort of adding unit tests to our code.
+        Well there are many benefits of writing unit tests which is why most professional development teams have a policy that they must be written for all code.
+        The number one benefit of writing unit tests is it makes it a lot easier to maintain and make changes to your code. When you're making changes to code that has great test coverage
+        you can be confident that if something breaks as a side effect of your change you will know about it when the tests run.
+        This way you can identify and fix issues before they end up in the production build.
+        It may take more time at first but in the long run it will actually save you time because adding features
+        and making changes becomes a lot easier with the added confidence that tests bring. Another great benefit to writing unit tests
+        is that it encourage developers to write testable code. In order for code to be testable there must be a clear input and output for each unit of code.
+        This also happens to be what makes easy to read reliable code. So testable code = quality code. So what about test driven development or TDD.
+        The classic way to write unit tests is you write the piece of code and then you write the unit tests With test driven development
+        all you do is you switch this round so you start by writing the unit test then you ensure the test fails and then you implement the code or feature to make the test pass.
+        So what's the benefit of doing it this way?
+        Well firstly it increases test coverage because you can be sure that all code written with TDD has been tested. On top of this
+        it helps ensure that your tests actually work. Just as there can be bugs in regular code there can also be bugs in test code.
+        It's possible that if there's a mistake in your test that it will always pass whether your code is working
+        or not. Test driven development helps avoid this because you check that the test fails before and passes after you implement the feature. Test driven development
+        also encourages you to naturally write good quality code since bad code is often difficult to test. 
+        Lastly the unit tests serve as a guideline for when to stop coding.
+     """
+
+
     ## You never want to depend on external services to be running when you write unit tests, as this would make your tests fragile and unpredicable
     ## It's never a good idea to make a test always pass, as this would defeat the purpose of helping you identify issues in your code
         

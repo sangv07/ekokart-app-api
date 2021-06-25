@@ -7,27 +7,32 @@ from core.models import Tag, Ingredient
 from recipe import serializers
 
 
-class TagViewSet(viewsets.GenericViewSet,
-                 mixins.ListModelMixin,
-                 mixins.CreateModelMixin):
-    """Manage tags in the database"""
+# creating Re-Usable Baes Class for Tag and Ingredient
+# we can create Baesclass and child class can inherit BaseClass
+# look for Example TagViewSet (inheriting base class) and IngredientsViewSet (without BaseClass)
+class BaseRecipeAttrViewSet(viewsets.GenericViewSet,
+                            mixins.CreateModelMixin,
+                            mixins.ListModelMixin):
+    """Base viewset for user owned recipe attributes"""
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
-    queryset = Tag.objects.all()
-    serializer_class = serializers.TagSerializer
 
-    # GET
     def get_queryset(self):
         """Return objects for the current authenticated user only"""
         return self.queryset.filter(useraccount=self.request.user).order_by('-username')
 
-    # '''create function is a function that allows us to hook into the create process when creating an object
-        # and what happens is when we do a create object in our viewset this function will be invoked and the serializer the
-        # validated sterilizer will be passed in as a serializer argument and then we can perform any modifications here that we'd like to create process'''
-    # Create/POST
     def perform_create(self, serializer):
-        """Create a new Tag"""
+        """Save objects into Database"""
         serializer.save(useraccount=self.request.user)
+
+
+# We hare inheriting from Above BaseRecipeAttrViewSet(). it will inherit all attributes of those class (variable, methods).
+class TagViewSet(BaseRecipeAttrViewSet):
+    """Manage tags in the database"""
+    queryset = Tag.objects.all()
+    serializer_class = serializers.TagSerializer
+
+    # get_queryset and perform_create will execute bcoz we inherit BaseClass()
 
 
 class IngredientViewSet(viewsets.GenericViewSet,
@@ -39,10 +44,15 @@ class IngredientViewSet(viewsets.GenericViewSet,
     queryset = Ingredient.objects.all()
     serializer_class = serializers.IngredientSerializer
 
+    # GET from Database
     def get_queryset(self):
         """return objects for the current authenticated user only"""
         return self.queryset.filter(useraccount=self.request.user).order_by('-username')
 
+    # '''create function is a function that allows us to hook into the create process when creating an object
+    # and what happens is when we do a create object in our viewset this function will be invoked and the serializer the
+    # validated sterilizer will be passed in as a serializer argument and then we can perform any modifications here that we'd like to create process'''
+    # Create/POST
     def perform_create(self, serializer):
         """Create a new Ingredient"""
         serializer.save(useraccount=self.request.user)

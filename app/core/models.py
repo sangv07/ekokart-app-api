@@ -101,3 +101,24 @@ class Ingredient(models.Model):
 
     def __str__(self):
         return self.username
+
+
+class Recipe(models.Model):
+    """Recipe to be used in the Recipe"""
+    title       = models.CharField(max_length=255)
+    time_minutes= models.IntegerField()
+    price       = models.DecimalField(max_digits=3, decimal_places=2)
+    link        = models.CharField(max_length=255, blank=True)
+
+    # ('Ingredient') if we don't user '' in string then Ingredients class need to be top of this class.
+    # but if we use '' in string then it doesn't matter the order or classes.
+    ingredients = models.ManyToManyField('Ingredient')  # relational model with Ingredient class
+    tags        = models.ManyToManyField('Tag')  # relational model with Tag class
+
+    useraccount = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+
+    def __str__(self):
+        return self.title
