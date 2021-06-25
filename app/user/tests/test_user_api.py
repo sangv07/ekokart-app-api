@@ -32,7 +32,7 @@ class PublicUserApiTests(TestCase):
 
     def test_create_valid_user_success(self):
         """Test creating user with valid payload is successful"""
-        # payload is the objects that you pass to the API when you make the request
+        # payload = {} is the objects that you pass to the API when you make the request
         payload = {
             'email': os.environ.get('USER_EMAIL'),
             'password': os.environ.get('USER_PASS'),

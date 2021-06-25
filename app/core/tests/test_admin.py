@@ -1,3 +1,5 @@
+import os
+
 from django.test import TestCase, Client
 from django.contrib.auth import get_user_model
 from django.urls import reverse
@@ -11,11 +13,11 @@ class AdminSiteTests(TestCase):
         self.client = Client()
         # passing email and password to app/core/model/UserManger() is functions() and forced tp login
         self.admin_user = get_user_model().objects.create_superuser(
-            email       = 'admin@appdev.com',
-            first_name='test_first',
-            last_name='test_last',
-            username='test',
-            password='admin123',
+            email       =os.environ.get('ADMIN_EMAIL'),
+            first_name=os.environ.get('ADMIN_FNAME'),
+            last_name=os.environ.get('ADMIN_LNAME'),
+            username=os.environ.get('ADMIN_USERNAME'),
+            password=os.environ.get('ADMIN_PASS'),
         )
         self.client.force_login(self.admin_user)
 

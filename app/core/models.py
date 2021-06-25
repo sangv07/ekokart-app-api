@@ -89,3 +89,15 @@ class Tag(models.Model):
     # String Representation
     def __str__(self):
         return self.username
+
+
+class Ingredient(models.Model):
+    """Ingredient to be used in a recipe"""
+    username = models.CharField(max_length=255)
+    useraccount = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+
+    def __str__(self):
+        return self.username

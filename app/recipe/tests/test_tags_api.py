@@ -1,3 +1,5 @@
+import os
+
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.test import TestCase
@@ -30,17 +32,17 @@ class PrivateTagsApiTests(TestCase):
     """Test the authorized user tags API"""
 
     def setUp(self):
-        self.user = get_user_model().objects.create_user(
-            'test@londonappdev.com',
-            'password'
+        self.user_tag = get_user_model().objects.create_user(
+            os.environ.get('USER_EMAIL'),
+            os.environ.get('USER_PASS')
         )
         self.client = APIClient()
-        self.client.force_authenticate(self.user)
+        self.client.force_authenticate(self.user_tag)
 
     def test_retrieve_tags(self):
         """Test retrieving tags"""
-        Tag.objects.create(useraccount=self.user, username='Vegan')
-        Tag.objects.create(useraccount=self.user, username='Dessert')
+        Tag.objects.create(useraccount=self.user_tag, username='Vegan')
+        Tag.objects.create(useraccount=self.user_tag, username='Dessert')
 
         res = self.client.get(TAGS_URL)
 
@@ -56,7 +58,7 @@ class PrivateTagsApiTests(TestCase):
             'testpass'
         )
         Tag.objects.create(useraccount=user2, username='Fruity')
-        tag = Tag.objects.create(useraccount=self.user, username='Comfort Food')
+        tag = Tag.objects.create(useraccount=self.user_tag, username='Comfort Food')
 
         res = self.client.get(TAGS_URL)
 
@@ -70,7 +72,7 @@ class PrivateTagsApiTests(TestCase):
         self.client.post(TAGS_URL, payload)
 
         exists = Tag.objects.filter(
-            useraccount=self.user,
+            useraccount=self.user_tag,
             username=payload['username']
         ).exists()
         self.assertTrue(exists)

@@ -26,11 +26,18 @@ services:
       - USER_PASS=${PASSWORD}
       - NEW_USER_NAME=${UPDATED_NAME}
       - NEW_USER_PASS=${UPDATED_PASS}
+      - ADMIN_EMAIL=${AD_EMAIL}
+      - ADMIN_USERNAME=${AD_USERNAME}
+      - ADMIN_FNAME=${AD_FNAME}
+      - ADMIN_LNAME=${AD_LNAME}
+      - ADMIN_PASS=${AD_PASS}
+
     depends_on:
       - db
-
   db:
     image: postgres:10-alpine
+    ports:
+      - "5432:5432"
     environment:
       - POSTGRES_DB=${NAME}
       - POSTGRES_USER=${user}

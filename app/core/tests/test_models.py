@@ -7,9 +7,8 @@ from core import models
 
 # '''We're going to start by adding a unit test for getting the tag object as a string and then we're going to implement our model and
 # then we're going to run our migrations to create the migration which would create the model in the database.'''
-def sample_user(email='sangv@test.co', password=os.environ.get('USER_PASS')):
+def sample_user(email=os.environ.get('USER_EMAIL'), password=os.environ.get('USER_PASS')):
     """Create a sample user"""
-    print('********', get_user_model().objects.create_user(email, password))
     return get_user_model().objects.create_user(email, password)
 
 
@@ -66,3 +65,14 @@ class ModelTests(TestCase):
         )
 
         self.assertEqual(str(tag), tag.username)
+
+    # creating Ingredient Tags endpoint in that it allows us to create and list ingredients which we can later assign to recipes for the
+    # purposes of filtering. We're going to start by adding our ingredient model
+    def test_ingredient_str(self):
+        """Test the ingredient string representation"""
+        ingredient = models.Ingredient.objects.create(
+            useraccount=sample_user(),
+            username='Cucumber'
+        )
+
+        self.assertEqual(str(ingredient), ingredient.username)
