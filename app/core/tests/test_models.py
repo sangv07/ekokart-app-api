@@ -61,10 +61,10 @@ class ModelTests(TestCase):
         """Test the tag string representation"""
         tag = models.Tag.objects.create(
             useraccount=sample_user(),
-            username='Non-Veg'
+            tag_name='Non-Veg'
         )
 
-        self.assertEqual(str(tag), tag.username)
+        self.assertEqual(str(tag), tag.tag_name)
 
     # creating Ingredient Tags endpoint in that it allows us to create and list ingredients which we can later assign to recipes for the
     # purposes of filtering. We're going to start by adding our ingredient model
@@ -72,10 +72,10 @@ class ModelTests(TestCase):
         """Test the ingredient string representation"""
         ingredient = models.Ingredient.objects.create(
             useraccount=sample_user(),
-            username='Chicken'
+            ing_name='Chicken'
         )
 
-        self.assertEqual(str(ingredient), ingredient.username)
+        self.assertEqual(str(ingredient), ingredient.ing_name)
 
     # to pass below test we have to create Recipe Class in core/models
     def test_recipe_str(self):

@@ -41,12 +41,12 @@ class PrivateIngredientsAPITests(TestCase):
 
     def test_retrieve_ingredient_list(self):
         """Test retrieving a list of ingredients"""
-        Ingredient.objects.create(useraccount=self.user, username='kale')
-        Ingredient.objects.create(useraccount=self.user, username='Salt')
+        Ingredient.objects.create(useraccount=self.user, ing_name='kale')
+        Ingredient.objects.create(useraccount=self.user, ing_name='Salt')
 
         res = self.client.get(INGREDIENTS_URL)
 
-        ingredients = Ingredient.objects.all().order_by('-username')
+        ingredients = Ingredient.objects.all().order_by('-ing_name')
         serializer = IngredientSerializer(ingredients, many=True)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
@@ -57,31 +57,31 @@ class PrivateIngredientsAPITests(TestCase):
             'other@londonappdev.com',
             'testpass'
         )
-        Ingredient.objects.create(useraccount=user2, username='Vinegar')
+        Ingredient.objects.create(useraccount=user2, ing_name='Vinegar')
 
-        ingredient = Ingredient.objects.create(useraccount=self.user, username='Tumeric')
+        ingredient = Ingredient.objects.create(useraccount=self.user, ing_name='Tumeric')
 
         res = self.client.get(INGREDIENTS_URL)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(len(res.data), 1)
-        self.assertEqual(res.data[0]['username'], ingredient.username)
+        self.assertEqual(res.data[0]['ing_name'], ingredient.ing_name)
 
     # below 2 function will test create and exist of Ingredients
     # it will access recipe/views/perform_create() and get_queryset() respectively
     def test_create_ingredients_successful(self):
         """Test create a new ingredient"""
-        payload = {'username': 'Cabbage'}  # Manually providing details for unittest
+        payload = {'ing_name': 'Cabbage'}  # Manually providing details for unittest
         self.client.post(INGREDIENTS_URL, payload)
 
         exists = Ingredient.objects.filter(useraccount=self.user,
-                                           username=payload['username'],
+                                           ing_name=payload['ing_name'],
                                            ).exists()
         self.assertTrue(exists)
 
     def test_create_ingredient_invalid(self):
         """Test creating invalid ingredient fails"""
-        payload = {'username': ''}
+        payload = {'ing_name': ''}
         res = self.client.post(INGREDIENTS_URL, payload)
 
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)

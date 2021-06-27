@@ -3,7 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 # python to human readable text
 from django.utils.translation import gettext as _
 
-from core.models import UserAccount, Tag
+from core.models import UserAccount, Tag, Ingredient, Recipe
 
 
 class UserAccountAdmin(UserAdmin):
@@ -20,7 +20,7 @@ class UserAccountAdmin(UserAdmin):
                 }),
         (_('Personal Info'), {'fields': ('username',)
                               }),
-        (_('Permossions'), {'fields': ('is_active',
+        (_('Permissions'), {'fields': ('is_active',
                                        'is_staff',
                                        'is_superuser')
                             }),
@@ -41,3 +41,5 @@ class UserAccountAdmin(UserAdmin):
 # Register your models here
 admin.site.register(UserAccount, UserAccountAdmin)
 admin.site.register(Tag)
+admin.site.register(Ingredient)
+admin.site.register(Recipe)

@@ -79,32 +79,39 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
 # creating class tags() because AttributeError: module 'core.models' has no attribute 'Tag'
 class Tag(models.Model):
     """Tag to be used for a recipe"""
+    print('*****Tag_Model*****')
+
     # Id = models.UUIDField(default=uuid.uuid4, primary_key=True)
-    username = models.CharField(max_length=255)
+    tag_name = models.CharField(max_length=255)
     useraccount = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
+        settings.AUTH_USER_MODEL,   # Note that Django suggests getting the User from the settings for relationship definitions
         on_delete=models.CASCADE,
 
     )
+
     # String Representation
     def __str__(self):
-        return self.username
+        return self.tag_name
 
 
 class Ingredient(models.Model):
     """Ingredient to be used in a recipe"""
-    username = models.CharField(max_length=255)
+    print('*****Ingredient_Model*****')
+
+    ing_name = models.CharField(max_length=255, verbose_name='ing_name')
     useraccount = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE
     )
 
     def __str__(self):
-        return self.username
+        return self.ing_name
 
 
 class Recipe(models.Model):
     """Recipe to be used in the Recipe"""
+    print('*****Recipe_Model*****')
+
     title       = models.CharField(max_length=255)
     time_minutes= models.IntegerField()
     price       = models.DecimalField(max_digits=3, decimal_places=2)
@@ -112,13 +119,14 @@ class Recipe(models.Model):
 
     # ('Ingredient') if we don't user '' in string then Ingredients class need to be top of this class.
     # but if we use '' in string then it doesn't matter the order or classes.
-    ingredients = models.ManyToManyField('Ingredient')  # relational model with Ingredient class
-    tags        = models.ManyToManyField('Tag')  # relational model with Tag class
+    ingredient_fk = models.ManyToManyField('Ingredient')  # relational model with Ingredient class
+    tag_fk        = models.ManyToManyField('Tag')  # relational model with Tag class
 
     useraccount = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE
     )
 
+    # String Representation
     def __str__(self):
         return self.title

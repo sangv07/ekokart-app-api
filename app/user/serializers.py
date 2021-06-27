@@ -12,15 +12,18 @@ from rest_framework import serializers
 
 class UserSerializer(serializers.ModelSerializer):
     """Serializer for the users objects"""
+    print('*****User_Serializer*****')
+
 
     class Meta:
         # This method will return the currently active User model – the custom User model if one is specified, or User otherwise (in this case app/core/models/UserAccount())
         model = get_user_model()
-        fields = ('email', 'password', 'username')
+        fields = ('email', 'password', 'username')  # fields that will be popup un REST-API Body
         extra_kwargs = {
             'password': {'write_only': True,
                          'min_length': 5}
         }
+
 
     # what Django rest framework does is when we're ready to create the user it
     # will call this create function and it will pass in the validated_data.
@@ -46,6 +49,8 @@ class UserSerializer(serializers.ModelSerializer):
 # creating Token API to make our unit tests pass again
 class AuthTokenSerializer(serializers.Serializer):
     """Serializer for the user_authentication objects"""
+    print('*****Auth_TokenSerializer*****')
+
     email = serializers.CharField()
     password = serializers.CharField(style={'input_type': 'password'},
                                      trim_whitespace=False
