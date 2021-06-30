@@ -1,5 +1,8 @@
 import os
 
+# to use UUID for image field
+from unittest.mock import patch
+
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from core import models
@@ -89,3 +92,17 @@ class ModelTests(TestCase):
 
         self.assertEqual(str(recipe), recipe.title)
 
+    # Creating TestCase for UUID creation for image. for this we will update new models.py file
+    @patch('uuid.uuid4')
+    def test_recipe_file_name_uuid(self, mock_uuid):
+        """Test that image is saved in the correct location"""
+
+        #  anytime we call this UUID for function that is triggered from within
+        # our test it will change the value override the default behavior and just
+        # return this instead this allows us to reliably test how our function works
+        uuid = 'test-uuid'
+        mock_uuid.return_value = uuid
+        file_path = models.recipe_image_file_path(None, 'myimage.jpg')
+
+        exp_path = f'uploads/recipe/{uuid}.jpg'
+        self.assertEqual(file_path, exp_path)

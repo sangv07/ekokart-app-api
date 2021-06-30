@@ -64,3 +64,13 @@ class RecipeDetailSerializer(RecipeSerializer):
     tag_fk = TagSerializer(many=True, read_only=True)
 
     # since This class Inherit RecipeSerializer it will auto-inherit 'Class Meta:' too
+
+
+# To handle the uploaded image (for this we are going to create View {get_serializer_class & upload_image()})
+class RecipeImageSerializer(serializers.ModelSerializer):
+    """Serializer for uploading images to recipes"""
+
+    class Meta:
+        model = Recipe
+        fields = ('id', 'image')
+        read_only_fields = ('id',)

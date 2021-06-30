@@ -13,5 +13,5 @@ app_name = 'recipe'
 
 urlpatterns = [
     path('', include(router.urls)),
-    # path(r'recipe-detail/', views.RecipeViewSet, name='recipe-detail'),
+
 ]
